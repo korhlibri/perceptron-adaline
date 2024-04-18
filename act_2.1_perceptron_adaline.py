@@ -86,7 +86,7 @@ class Adaline:
         return activation
 
     def predict(self, row):
-        return 1 if self.activate(row) >= 0.0 else 0
+        return 1 if self.activate(row) >= 0.5 else 0
 
     def fit(self, dataset):
         self.weight = [0.0 for i in range(len(dataset[0]))]
@@ -102,7 +102,7 @@ class Adaline:
 
                 i = 0
                 while i < len(row)-1:
-                    self.weight[i + 1] += self.rate * (2 * error) * row[i]
+                    self.weight[i + 1] += self.rate * error * row[i]
                     i += 1
                 
             print("Epoch {}: Error Sum = {}".format(epoch+1, error_sum))
@@ -166,12 +166,12 @@ filename = "testdata.csv"
 # prepare_test_data = Formula(filename)
 # prepare_test_data.populate(1000)
 
-perceptron = Perceptron(0.01, 10)
+perceptron = Perceptron(0.01, 100)
 perceptron.fit(dataset)
 
 print()
 
-adaline = Adaline(0.5, 100)
+adaline = Adaline(0.1, 100)
 adaline.fit(dataset)
 # print()
 # print(perceptron.weight)
