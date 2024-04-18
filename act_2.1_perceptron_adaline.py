@@ -102,7 +102,7 @@ class Adaline:
 
                 i = 0
                 while i < len(row)-1:
-                    self.weight[i + 1] += self.rate * error * row[i]
+                    self.weight[i + 1] += self.rate * (2 * error) * row[i]
                     i += 1
                 
             print("Epoch {}: Error Sum = {}".format(epoch+1, error_sum))
