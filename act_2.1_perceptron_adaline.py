@@ -227,15 +227,23 @@ prepared_dataset = []
 with open(filename, "r") as f:
     prepared_dataset = [list(map(float, x[:-1].split(","))) for x in f.readlines()]
 
+prepared_dataset_redundancy = []
+for row in prepared_dataset:
+    row_redundancy = [row[0], row[1], row[2], row[0]**2, row[1]**2, row[2]**2, row[3],]
+    prepared_dataset_redundancy.append(row_redundancy)
+
 adaline = Adaline(0.001, 500)
-adaline.fit(prepared_dataset)
+adaline.fit(prepared_dataset_redundancy)
 
 y = []
 predicted_y = []
 
-for row in prepared_dataset:
+for row in prepared_dataset_redundancy:
     y.append(row[-1])
     predicted_y.append(adaline.activate(row))
+
+print(y)
+print(predicted_y)
 
 plt.plot(y, y)
 plt.plot(predicted_y, y)
