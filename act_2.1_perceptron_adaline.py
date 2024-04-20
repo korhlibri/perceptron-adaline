@@ -232,7 +232,7 @@ for row in prepared_dataset:
     row_redundancy = [row[0], row[1], row[2], row[0]**2, row[1]**2, row[2]**2, row[3],]
     prepared_dataset_redundancy.append(row_redundancy)
 
-adaline = Adaline(0.001, 500)
+adaline = Adaline(0.001, 1000)
 adaline.fit(prepared_dataset_redundancy)
 
 y = []
