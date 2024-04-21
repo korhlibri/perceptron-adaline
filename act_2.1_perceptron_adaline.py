@@ -73,6 +73,9 @@ class Perceptron:
         self.rate = rate
         self.epochs = epochs
 
+    # Perceptron merges activation and prediction function together
+    # Activation gets the activation value
+    # Prediction returns either 1 or 0 as result
     def predict(self, row):
         activation = self.weight[0]
 
@@ -85,7 +88,8 @@ class Perceptron:
 
     def fit(self, dataset):
         self.error = []
-        self.weight = [0.0 for i in range(len(dataset[0]))]
+        # Initialize a set of random weights with random, between 0 and 1
+        self.weight = [random.random() for i in range(len(dataset[0]))]
 
         for epoch in range(self.epochs):
             error_sum = 0
@@ -124,6 +128,8 @@ class Adaline:
         self.rate = rate
         self.epochs = epochs
     
+    # In adaline, activation and prediction functions are separated
+    # Activation is also used as prediction in case 2, where output is not binary
     def activate(self, row):
         activation = self.weight[0]
 
@@ -134,12 +140,16 @@ class Adaline:
         
         return activation
 
+    # For prediction (in case 1) we return a 1 if activation value is above 0.5, as that
+    # value corresponds to a positive statement. If the activation value is below 0.5, it
+    # is a negative statement
     def predict(self, row):
         return 1 if self.activate(row) >= 0.5 else 0
 
     def fit(self, dataset):
         self.error = []
-        self.weight = [0.0 for i in range(len(dataset[0]))]
+        # Initialize a set of random weights, between 0 and 1
+        self.weight = [random.random() for i in range(len(dataset[0]))]
 
         for epoch in range(self.epochs):
             error_sum = 0
@@ -182,6 +192,7 @@ class case1_prediction:
             false_negative = 0
 
             for row in rows:
+                # Convertion of csv row (string) as a Python array
                 prepared_row = [int(x) for x in row[:-1].split(",")]
                 predicted = model.predict(prepared_row)
                 # print("{}. Predicted: {}. Expected: {}. Error: {}".format(prepared_row, predicted, prepared_row[-1], predicted != prepared_row[-1]))
@@ -217,6 +228,8 @@ class case2_prediction:
         self.error = []
 
         with open(self.file, "r") as f:
+            # The iteration is started from the position 1000. This indicades the first 1000 values
+            # as training values, and the remaining 100 as result values that have to be predicted.
             for row in f.readlines()[1000:]:
                 prepared_row = [float(x) for x in row.split(",")]
                 prepared_row = [prepared_row[0], prepared_row[1], prepared_row[2], prepared_row[0]**2, prepared_row[1]**2, prepared_row[2]**2, prepared_row[3]]
@@ -250,8 +263,13 @@ dataset = [[0,0,0,0,0],
 [1,1,1,0,1],
 [1,1,1,1,1]]
 
-filename = "chaos_values.csv"
-
+# While the filenames can be changed to anything, it is important to repopulate
+# the csv files with accurate data. This can be faciliated with the first 2 classes
+# which allow to generate data for both cases.
+# 
+# For case 2, it is important to first call logistic_map() as this will generate the
+# values based on the logistic function, and then logistic_values(), which will combine
+# these values into usable data.
 def case1_perceptron():
     filename = "trainingdata.csv"
     perceptron = Perceptron(0.01, 100)
@@ -277,6 +295,8 @@ def case2_adaline():
     with open(filename, "r") as f:
         prepared_dataset = [list(map(float, x[:-1].split(","))) for x in f.readlines()[:999]]
     
+    # In order for adaline to correctly predict the function, it is important to add redundancy
+    # to the data. This will allow for adaline to learn correctly from the data.
     prepared_dataset_redundancy = []
     for row in prepared_dataset:
         row_redundancy = [row[0], row[1], row[2], row[0]**2, row[1]**2, row[2]**2, row[3],]
