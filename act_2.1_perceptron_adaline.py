@@ -206,6 +206,7 @@ class case1_prediction:
                         false_positive += 1
                     else:
                         false_negative += 1
+            print("\nTrue Positive : {} | False Positive: {}\nFalse Negative: {} | True Negative : {}".format(true_positive, false_positive, false_negative, true_positive))
             precision = (true_positive / (true_positive + false_positive))*100
             recall = (true_positive / (true_positive + false_negative))*100
             f_measure = ((2 * true_positive) / (2 * true_positive + false_positive + false_negative))*100
@@ -307,6 +308,6 @@ def case2_adaline():
     test = case2_prediction(filename)
     test.predict(adaline)
 
-# case1_perceptron()
+case1_perceptron()
 # case1_adaline()
-case2_adaline()
+# case2_adaline()
